@@ -29,9 +29,9 @@
             <form class="navbar-form navbar-left" action="#" role="search">
             <div class="form-group">
               <div class="input-group">
-                <input class="form-control" id="navbarInput-01" type="search" placeholder="Search">
+                <input class="form-control" id="search_input" type="search" placeholder="Search">
                 <span class="input-group-btn">
-                  <button type="submit" class="btn"><span class="fui-search"></span></button>
+                  <button type="button" onclick="search_movie()" class="btn"><span class="fui-search"></span></button>
                 </span>
               </div>
             </div>
@@ -71,5 +71,11 @@
 {{ super() }}
 <script type="text/javascript"  src="{{ url_for('static', filename='flatUI/dist/js/flat-ui.js')}}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='flatUI/dist/js/application.js')}}"></script>
+<script type="text/javascript">
+function search_movie(){
+    var keyword=document.getElementById("search_input").value;
+    window.location.href="./movie/search/"+keyword;
+}
+</script>
 {{ moment.include_moment() }}
 {% endblock %}
