@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Rec-sys{% endblock %}
+
+{% block page_content %}
+<div class="container">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+         <h4>Todo list</h4>
+          <div class="todo">
+            <div class="todo-search"><!--代做事件的搜索框-->
+              <input class="todo-search-field" type="search" value="" placeholder="Search" />
+            </div>
+            <ul>
+              <li class="todo-done">
+                <div class="todo-icon fui-list"></div>
+                <div class="todo-content">
+                  <h4 class="todo-name">
+                    初步的登陆和注册完成
+                  </h4>
+                  4-15
+                </div>
+              </li>
+              <li class="todo-done">
+                <div class="todo-icon fui-list"></div>
+                <div class="todo-content">
+                  <h4 class="todo-name">
+                    主页面改为Flat UI
+                  </h4>
+                  4-17
+                </div>
+              </li>
+              <li>
+                <div class="todo-icon fui-list"></div>
+                <div class="todo-content">
+                  <h4 class="todo-name">
+                    dropdown 不显示下拉内容
+                  </h4>
+                    As soon as possible
+                </div>
+              </li>
+              <li>
+                <div class="todo-icon fui-list"></div>
+                <div class="todo-content">
+                  <h4 class="todo-name">
+                    主页面搜索框调用豆瓣的搜索api
+                  </h4>
+                  As soon as possible
+                </div>
+              </li>
+            </ul>
+          </div><!-- /.todo -->
+        </div><!-- /.col-md-4 -->
+
+      <div class="col-sm-6 col-md-4">
+            <h4>Git-Hub</h4>
+               <div class="tile" style="
+                                    margin-bottom: 0px;
+                                    border-bottom-width: 15px;
+                                    padding-bottom: 44px;
+                                ">
+                <img src="/static/github.svg" alt="Chat" class="tile-image">
+                <h3 class="tile-title">Free for Share</h3>
+                <p style=" height: 40px;padding-bottom: 83px;">Your likes, shares and comments helps us.</p>
+                <a class="btn btn-primary btn-large btn-block" href="https://github.com/Fivepoints">Get Info</a>
+              </div>
+      </div>
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+{% endblock %}

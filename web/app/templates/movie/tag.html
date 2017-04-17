@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Rec-sys{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link href="../static/iCheck/polaris/polaris.css" rel="stylesheet">
+{% endblock %}
+
+{% block page_content %}
+    {% for tagCol,tags in taglt.items() %}
+    <div class="skin skin-polaris">
+    <h1>{{ tagCol }}:</h1>
+        {% for tag in tags %}
+            <input type="checkbox" id="polaris-checkbox-1">
+            <label for="polaris-checkbox-1">{{ tag }}</label>
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript" src="../static/iCheck/icheck.min.js"></script>
+<script>
+ $(document).ready(function(){
+      $('.skin-polaris input').iCheck({
+        checkboxClass: 'icheckbox_polaris',
+        radioClass: 'iradio_polaris',
+        increaseArea: '-10'
+      });
+    });
+</script>
+{% endblock %}
