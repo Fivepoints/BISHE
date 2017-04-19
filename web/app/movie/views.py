@@ -12,6 +12,7 @@ def tagList():
 @movie.route('/search/<keyword>')
 def search(keyword):
     start_url=r'https://api.douban.com/v2/movie/search?q='
-    url=start_url+keyword
+    url=start_url+keyword+'&count=5'
+    # print(url)
     r = requests.get(url=url)
     return render_template('movie/searchResult.html', movieInfo=r.json())

@@ -2,13 +2,45 @@
 
 {% block title %}Rec-sys{% endblock %}
 
-{% block head %}
-{{ super() }}
-<link href="../static/iCheck/polaris/polaris.css" rel="stylesheet">
-{% endblock %}
-
 {% block page_content %}
-{{ movieInfo }}
+<table class="table">
+    <caption><em><h4>{{ movieInfo['title'] }}</h4></em></caption>
+    <thead>
+      <tr>
+         <th>电影名称</th>
+          <th>封面</th>
+          <th>上映</th>
+          <th>类型</th>
+          <th>导演</th>
+          <th>主演</th>
+          <th>评分</th>
+          <th>操作</th>
+      </tr>
+   </thead>
+    <tbody>
+    {% for i in range(5) %}
+        <tr>
+            <td>{{ movieInfo['subjects'][i]['title'] }}</td>
+            <td><img src="{{ movieInfo['subjects'][i]['images']['small'] }}"></td>
+            <td>{{ movieInfo['subjects'][i]['year'] }}</td>
+            <td>
+                {% for genre in movieInfo['subjects'][i]['genres'] %}
+                    {{ genre }}/
+                {% endfor %}
+            </td>
+            <td>{{ movieInfo['subjects'][i]['directors'][0]['name'] }}</td>
+            <td>
+                {% for cast in movieInfo['subjects'][i]['casts'] %}
+                    {{ cast['name'] }}/
+                {% endfor %}
+            </td>
+            <td>{{ movieInfo['subjects'][i]['rating']['average'] }}</td>
+            <td><a href="#">进行评分</a></td>
+        </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
 {% endblock %}
 
 {% block scripts %}
