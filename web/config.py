@@ -9,12 +9,8 @@ class Config:
     MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    FLASKY_MAIL_SUBJECT_PREFIX = '[Rec-sys]'
-    FLASKY_MAIL_SENDER = 'Rec-sys Admin'
-    FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN') or 'Zhao Pengya'
-
+    MAIL_USERNAME = '1101936864'
+    MAIL_PASSWORD = 'dpdzwoaregcyibie'
     @staticmethod
     def init_app(app):
         pass
