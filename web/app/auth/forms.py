@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, SelectMultipleField, RadioField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 from ..models import User
@@ -23,6 +23,13 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[
         Required(), EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('Confirm password', validators=[Required()])
+
+    gender = RadioField('gender',coerce=str,choices=[('F','femal'), ('M', 'male')],validators=[Required()])
+    age = SelectField('Your age',coerce=int,choices=[(1,'under 18'), (18, '18-24'),(25,'25-34')\
+                                                    ,(35,'35-44'),(45,'45-49'),(30,'50-55') \
+                                                    ,(56, '56+')], validators=[Required()])
+    occupation = SelectField('Your oocupation',coerce=str,choices=[('1','academic/educator'), \
+                ('2', 'artist'),('3', 'clerical/admin')],validators=[Required()])
     submit = SubmitField('Register')
 
     def validate_email(self, field):

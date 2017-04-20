@@ -6,7 +6,6 @@
 # Packages
 *.egg
 *.egg-info
-dist
 build
 eggs
 parts
@@ -34,9 +33,6 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-
-# SQLite databases
-*.sqlite
 
 # Virtual environment
 venv
