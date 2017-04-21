@@ -1,10 +1,10 @@
+from config import config
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
-from config import config
 
 bootstrap = Bootstrap()
 mail = Mail()
@@ -37,3 +37,4 @@ def create_app(config_name):
     app.register_blueprint(movie_blueprint, url_prefix='/movie')
 
     return app
+

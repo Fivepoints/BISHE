@@ -7,10 +7,11 @@
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="stylesheet" href="{{ url_for('static', filename='flatUI/dist/css/flat-ui.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='loading/loading.css') }}">
 {% endblock %}
 
 {% block navbar %}
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <nav class="navbar navbar-default navbar-lg" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -21,13 +22,13 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="{{ url_for('movie.recommend')}}">Recommend</a></li>
             <li><a href="{{ url_for('main.schedule')}}">Todo List</a></li>
           </ul>
             <form class="navbar-form navbar-left" action="#" role="search">
             <div class="form-group">
               <div class="input-group">
-                <input class="form-control" id="search_input" type="search" placeholder="Search">
+                <input class="form-control" id="search_input" type="search" placeholder="Search movie">
                 <span class="input-group-btn">
                   <button type="button" onclick="search_movie()" class="btn"><span class="fui-search"></span></button>
                 </span>
@@ -36,23 +37,23 @@
            </form>
           <ul class="nav navbar-nav navbar-right">
               {% if current_user.is_authenticated() %}
-                <li class="dropdown">
+                  <li class="active"><a href="{{ url_for('auth.logout') }}">{{ current_user.username }}</a></li>
+                {#<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ current_user.username }}<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="{{ url_for('movie.tagList') }}">完善个人观影数据</a></li>
                     <li><a href="#">生成观影推荐数据</a></li>
                     <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
                 </ul>
-                </li>
+                </li>#}
               {% else %}
-                <li class="active"><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                <li class="active"><a href="{{ url_for('auth.login') }}">Signed in</a></li>
               {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>
-    </div>
+    </nav>
 {% endblock %}
-
 {% block content %}
 <div class="container">
     {% for message in get_flashed_messages() %}
@@ -67,13 +68,23 @@
 
 {% block scripts %}
 {{ super() }}
+{#<script type="text/javascript" src="{{ url_for('static', filename='flatUI/dist/js/jquery.min.js.js')}}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='flatUI/dist/css/bootstrap.min.css')}}"></script>#}
 <script type="text/javascript"  src="{{ url_for('static', filename='flatUI/dist/js/flat-ui.js')}}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='flatUI/dist/js/application.js')}}"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="{{ url_for('static', filename='loading/loading.js')}}"></script>
+<script>
 function search_movie(){
     var keyword=document.getElementById("search_input").value;
     window.location.href="/movie/search/"+keyword;
 }
+
+$(function(){
+    $("#load").click(function(){
+        $("body").mLoading();
+    });
+});
+
 </script>
 {{ moment.include_moment() }}
 {% endblock %}
