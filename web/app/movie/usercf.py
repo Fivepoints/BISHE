@@ -38,7 +38,7 @@ class UserBasedCF():
         print('load database succ', file=sys.stderr)
 
 
-    def generate_dataset(self, pivot=0.7):
+    def generate_dataset(self, pivot=0.3):
         ''' load rating data and split it to training set and test set '''
         trainset_len = 0
         testset_len = 0
@@ -129,8 +129,8 @@ class UserBasedCF():
                 rank.setdefault(movie,0)
                 rank[movie] += wuv
         # return the N best movies
+        # print(sorted(list(rank.items()), key=itemgetter(1), reverse=True)[0:N])
         return sorted(list(rank.items()), key=itemgetter(1), reverse=True)[0:N]
-
 
     def evaluate(self):
         ''' return precision, recall, coverage and popularity '''

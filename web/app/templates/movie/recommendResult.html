@@ -3,10 +3,8 @@
 {% block title %}Rec-sys{% endblock %}
 
 {% block page_content %}
-推荐结果显示
-{#<table class="table">
-
-    <caption><em><h4>{{ movieInfo['title'] }}</h4></em></caption>
+<table class="table">
+    <caption><em><h4>推荐结果显示</h4></em></caption>
     <thead>
       <tr>
          <th>电影名称</th>
@@ -20,29 +18,28 @@
       </tr>
    </thead>
     <tbody>
-    {% for i in range(5) %}
+    {% for movieInfo in moviesInfo %}
         <tr>
-            <td>{{ movieInfo['subjects'][i]['title'] }}</td>
-            <td><img src="{{ movieInfo['subjects'][i]['images']['small'] }}"></td>
-            <td>{{ movieInfo['subjects'][i]['year'] }}</td>
+            <td>{{ movieInfo['subjects'][0]['title'] }}</td>
+            <td><img src="{{ movieInfo['subjects'][0]['images']['small'] }}"></td>
+            <td>{{ movieInfo['subjects'][0]['year'] }}</td>
             <td>
-                {% for genre in movieInfo['subjects'][i]['genres'] %}
+                {% for genre in movieInfo['subjects'][0]['genres'] %}
                     {{ genre }}/
                 {% endfor %}
             </td>
-            <td>{{ movieInfo['subjects'][i]['directors'][0]['name'] }}</td>
+            <td>{{ movieInfo['subjects'][0]['directors'][0]['name'] }}</td>
             <td>
-                {% for cast in movieInfo['subjects'][i]['casts'] %}
+                {% for cast in movieInfo['subjects'][0]['casts'] %}
                     {{ cast['name'] }}/
                 {% endfor %}
             </td>
-            <td>{{ movieInfo['subjects'][i]['rating']['average'] }}</td>
-            <td><a href="#">进行评分</a></td>
+            <td>{{ movieInfo['subjects'][0]['rating']['average'] }}</td>
+            <td><a href="{{ movieInfo['subjects'][0]['alt'] }}">查看详情</a></td>
         </tr>
     {% endfor %}
-
   </tbody>
-</table>#}
+</table>
 {% endblock %}
 
 {% block scripts %}

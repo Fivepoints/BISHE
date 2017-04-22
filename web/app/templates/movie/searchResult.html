@@ -35,6 +35,7 @@
                 {% endfor %}
             </td>
             <td>{{ movieInfo['subjects'][i]['rating']['average'] }}</td>
+            <td hidden>{{ movieInfo['subjects'][i]['original_title'] }}</td>
             <td><a href="#">进行评分</a></td>
         </tr>
     {% endfor %}
