@@ -46,14 +46,18 @@ class UserBasedCF():
         for line in self.loadfile():
             user, movie, rating = line.split('::')
             # split the data by pivot
-            if (random.random() < pivot):
-                self.trainset.setdefault(user,{})
-                self.trainset[user][movie] = int(rating)
-                trainset_len += 1
-            else:
-                self.testset.setdefault(user,{})
-                self.testset[user][movie] = int(rating)
-                testset_len += 1
+            self.trainset.setdefault(user, {})
+            self.trainset[user][movie] = float(rating)
+            trainset_len += 1
+
+            # if (random.random() < pivot):
+            #     self.trainset.setdefault(user,{})
+            #     self.trainset[user][movie] = float(rating)
+            #     trainset_len += 1
+            # else:
+            #     self.testset.setdefault(user,{})
+            #     self.testset[user][movie] = float(rating)
+            #     testset_len += 1
 
         print('split training set and test set succ', file=sys.stderr)
         print('train set = %s' % trainset_len, file=sys.stderr)
@@ -99,7 +103,7 @@ class UserBasedCF():
         # calculate similarity matrix 
         print('calculating user similarity matrix...', file=sys.stderr)
         simfactor_count = 0
-        PRINT_STEP = 2000000
+        PRINT_STEP = 20000
         for u,related_users in usersim_mat.items():
             for v,count in related_users.items():
                 usersim_mat[u][v] = count / math.sqrt(

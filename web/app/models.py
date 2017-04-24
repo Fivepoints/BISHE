@@ -17,7 +17,7 @@ class User(UserMixin, db.Model):
     occupation = db.Column(db.String(64))
     confirmed = db.Column(db.Boolean,default=False)
 
-    ratings=db.relationship('Rating', backref='user', lazy='dynamic')
+    ratings = db.relationship('Rating', backref='user', lazy='dynamic')
 
     @property
     def password(self):
@@ -58,14 +58,15 @@ class Movie(db.Model):
     ratings = db.relationship('Rating', backref='movie', lazy='dynamic')
 
     def __repr__(self):
-        return '<Movie %r>' % self.moviename
+        return '<Movie %r>' % self.movie_name
 
 class Rating(db.Model):
+
     __tablename__='ratings'
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id= db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
+    # id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'), primary_key=True)
     rating = db.Column(db.Integer)
 
     def __repr__(self):

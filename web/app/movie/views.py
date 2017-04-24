@@ -1,6 +1,8 @@
-from ..models import Movie
+import sqlalchemy
+from ..models import Movie, Rating
 from flask import flash, redirect, url_for
 from . import movie
+from .. import db
 from flask import render_template
 from flask_login import login_required, current_user
 import requests
@@ -25,7 +27,7 @@ def search(keyword):
 @movie.route('/recommed')
 @login_required
 def recommend():
-    user_id = current_user.id
+    user_id = current_user.user_id
     movies_id = usercf.recommend(str(user_id))
     if movies_id is None:
         flash('before recommend you shoud start the recommend algorithm!')
@@ -33,8 +35,9 @@ def recommend():
     start_url = r'https://api.douban.com/v2/movie/search?q='
     movies=[]
     for movie_id in movies_id:
-        movie = Movie.query.filter_by(id=movie_id[0]).first()
-        url = start_url + movie.moviename + '&count=1'
+        movie = Movie.query.filter_by(movie_id=movie_id[0]).first()
+        print(movie.movie_name)
+        url = start_url + movie.movie_name + '&count=1'
         r = requests.get(url=url)
         j = r.json()
         if len(j["subjects"]) == 0:
@@ -51,7 +54,29 @@ def recommend():
 
 @movie.route('/loadRecSys')
 def loadRecSys():
-
     usercf.generate_dataset()
     usercf.calc_user_sim()
-    return render_template('movie/loadRecSys.html')
+    flash('the algorithm is staring')
+    return redirect(url_for('main.index'))
+    # return render_template('movie/loadRecSys.html')
+
+@movie.route('/addRatingRecord/<original_name>/<rating>')
+def addRatingRecord(original_name,rating):
+    user_id = current_user.user_id
+    like_str = '%'+original_name+'%'
+    movie = Movie.query.filter(Movie.movie_name.ilike(like_str)).first()
+    # print(movie.movie_id)
+    # return redirect(url_for('main.index'))
+    if movie is None:
+        flash('add ratingRecord failure!')
+        return redirect(url_for('main.index'))
+    else:
+        rating = Rating(user_id=user_id, movie_id=movie.movie_id, rating=rating)
+        try:
+            db.session.add(rating)
+            db.session.commit()
+            flash('add ratingRecord suc!')
+            return redirect(url_for('main.index'))
+        except sqlalchemy.exc.InvalidRequestError or sqlalchemy.exc.IntegrityError:
+            flash('add ratingRecord failure because of the same ratingRecord already in database')
+            return redirect(url_for('main.index'))

@@ -19,8 +19,8 @@
           <th>类型</th>
           <th>导演</th>
           <th>主演</th>
-          <th>评价</th>
           <th>打分</th>
+          <th>确认</th>
       </tr>
    </thead>
     <tbody>
@@ -40,16 +40,17 @@
                     {{ cast['name'] }}/
                 {% endfor %}
             </td>
-            <td>{{ movieInfo['subjects'][i]['rating']['average'] }}</td>
-            <td hidden>{{ movieInfo['subjects'][i]['original_title'] }}</td>
             <td>
-                <select data-toggle="select" class="form-control select select-default mrs mbm">
-                    <option value="1">很差</option>
-                    <option value="2">较差</option>
-                    <option value="3">还行</option>
-                    <option value="4" selected>推荐</option>
-                    <option value="5">力荐</option>
+                <select name="rating" data-toggle="select" class="form-control select select-default mrs mbm">
+                    <option value="1">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp很差--1分</option>
+                    <option value="2">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp较差--2分</option>
+                    <option value="3">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp还行--3分</option>
+                    <option value="4" selected>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp推荐--4分</option>
+                    <option value="5">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp力荐--5分</option>
                 </select>
+            </td>
+            <td>
+                <button value="{{ movieInfo['subjects'][i]['original_title']  }}" class="btn">提交</button>
             </td>
         </tr>
     {% endfor %}
@@ -60,6 +61,23 @@
 
 {% block scripts %}
 {{ super() }}
-{#<script type="text/javascript" src="{{ url_for("static",filename="barrating.js") }}"></script>
-<script type="text/javascript" src="{{ url_for("static",filename="example.js") }}"></script>#}
+<script>
+$(document).ready(function () {
+    $(".btn").click(function () {
+        var original_name=$(this).val()
+        var select = $(this).parent().prev().find("select")
+        var rating=select.val()
+        alert(original_name)
+        alert(rating)
+        window.location.href="/movie/addRatingRecord/"+original_name+"/"+rating;
+    })
+})
+function addRatingRecord(button)
+{
+    var original_name=button.value
+    var select = button.parent().prev().children()[0]
+    var rating = select.value
+    alert(original_name+''+rating)
+}
+</script>
 {% endblock %}

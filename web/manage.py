@@ -28,24 +28,24 @@ def test():
 
 def dat2base():
 
-    # '''transefer dat to database'''
-    # path='../ml-latest-small/movies.csv'
-    # count=0
-    # fp = open(path,'r')
-    # fp.readline()
-    # regex = re.compile("(\d+),\"?(.+)\"?,(.+)")
-    # for line in fp.readlines():
-    #     ilt = regex.search(line)
-    #     if ilt.group(2).endswith("\""):
-    #         movie = Movie(movie_id=ilt.group(1), movie_name=ilt.group(2)[:-2], movie_genres=ilt.group(3))
-    #     else:
-    #         movie = Movie(movie_id=ilt.group(1),movie_name=ilt.group(2),movie_genres=ilt.group(3))
-    #     db.session.add(movie)
-    #     count+=1
-    #     if count % 1000 == 0:
-    #         db.session.commit()
-    #     print("\r当前进度: {:.2f}%".format(count / 9126 * 100), end="")
-    # db.session.commit()
+    '''transefer dat to database'''
+    path='../ml-latest-small/movies.csv'
+    count=0
+    fp = open(path,'r')
+    fp.readline()
+    regex = re.compile("(\d+),\"?(.+)\"?,(.+)")
+    for line in fp.readlines():
+        ilt = regex.search(line)
+        if ilt.group(2).endswith("\""):
+            movie = Movie(movie_id=ilt.group(1), movie_name=ilt.group(2)[:-2], movie_genres=ilt.group(3))
+        else:
+            movie = Movie(movie_id=ilt.group(1),movie_name=ilt.group(2),movie_genres=ilt.group(3))
+        db.session.add(movie)
+        count+=1
+        if count % 1000 == 0:
+            db.session.commit()
+        print("\r当前进度: {:.2f}%".format(count / 9126 * 100), end="")
+    db.session.commit()
 
     path = '../ml-latest-small/ratings.csv'
     count = 0
