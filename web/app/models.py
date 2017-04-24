@@ -7,10 +7,11 @@ from . import db, login_manager
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=True, index=True)
+
+    user_id = db.Column(db.Integer, unique=True,primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
+    email = db.Column(db.String(64), unique=True, index=True)
     age = db.Column(db.Integer)
     gender = db.Column(db.String(60))
     occupation = db.Column(db.String(64))
@@ -31,7 +32,7 @@ class User(UserMixin, db.Model):
 
     def generate_confirmation_token(self, expiraton=3600):
         s = Serializer(current_app.config['SECRET_KEY'],expiraton)
-        return s.dumps({'confirm':self.id})
+        return s.dumps({'confirm':self.user_id})
 
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -39,7 +40,7 @@ class User(UserMixin, db.Model):
             data=s.loads(token)
         except:
             return False
-        if data.get('confirm') != self.id:
+        if data.get('confirm') != self.user_id:
             return False
         self.confirmed = True
         db.session.add(self)
@@ -51,8 +52,8 @@ class User(UserMixin, db.Model):
 class Movie(db.Model):
     __tablename__='movies'
 
-    id = db.Column(db.Integer, primary_key=True)
-    moviename = db.Column(db.String(64), unique=True, index=True)
+    movie_id = db.Column(db.Integer,primary_key=True)
+    movie_name = db.Column(db.String(64),  index=True)
     movie_genres = db.Column(db.String(64))
     ratings = db.relationship('Rating', backref='movie', lazy='dynamic')
 
@@ -61,9 +62,10 @@ class Movie(db.Model):
 
 class Rating(db.Model):
     __tablename__='ratings'
+
     id = db.Column(db.Integer, primary_key=True)
-    user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
-    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
+    user_id= db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
     rating = db.Column(db.Integer)
 
     def __repr__(self):

@@ -1,7 +1,8 @@
 from ..models import Movie
+from flask import flash, redirect, url_for
 from . import movie
 from flask import render_template
-from flask_login import login_required,current_user
+from flask_login import login_required, current_user
 import requests
 from .usercf import usercf
 
@@ -26,6 +27,9 @@ def search(keyword):
 def recommend():
     user_id = current_user.id
     movies_id = usercf.recommend(str(user_id))
+    if movies_id is None:
+        flash('before recommend you shoud start the recommend algorithm!')
+        return redirect(url_for('main.index'))
     start_url = r'https://api.douban.com/v2/movie/search?q='
     movies=[]
     for movie_id in movies_id:

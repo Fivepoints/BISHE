@@ -2,6 +2,12 @@
 
 {% block title %}Rec-sys{% endblock %}
 
+{#{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='starRating/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='starRating/example.css') }}">
+{% endblock%}#}
+
 {% block page_content %}
 <table class="table">
     <caption><em><h4>{{ movieInfo['title'] }}</h4></em></caption>
@@ -13,8 +19,8 @@
           <th>类型</th>
           <th>导演</th>
           <th>主演</th>
-          <th>评分</th>
-          <th>操作</th>
+          <th>评价</th>
+          <th>打分</th>
       </tr>
    </thead>
     <tbody>
@@ -36,7 +42,15 @@
             </td>
             <td>{{ movieInfo['subjects'][i]['rating']['average'] }}</td>
             <td hidden>{{ movieInfo['subjects'][i]['original_title'] }}</td>
-            <td><a href="#">进行评分</a></td>
+            <td>
+                <select data-toggle="select" class="form-control select select-default mrs mbm">
+                    <option value="1">很差</option>
+                    <option value="2">较差</option>
+                    <option value="3">还行</option>
+                    <option value="4" selected>推荐</option>
+                    <option value="5">力荐</option>
+                </select>
+            </td>
         </tr>
     {% endfor %}
 
@@ -46,4 +60,6 @@
 
 {% block scripts %}
 {{ super() }}
+{#<script type="text/javascript" src="{{ url_for("static",filename="barrating.js") }}"></script>
+<script type="text/javascript" src="{{ url_for("static",filename="example.js") }}"></script>#}
 {% endblock %}

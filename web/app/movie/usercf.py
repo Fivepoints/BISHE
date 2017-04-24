@@ -117,20 +117,22 @@ class UserBasedCF():
         K = self.n_sim_user
         N = self.n_rec_movie
         rank = dict()
-        watched_movies = self.trainset[user]
-
-        # v=similar user, wuv=similarity factor
-        for v, wuv in sorted(list(self.user_sim_mat[user].items()),
-                key=itemgetter(1), reverse=True)[0:K]:
-            for movie in self.trainset[v]:
-                if movie in watched_movies:
-                    continue
-                # predict the user's "interest" for each movie
-                rank.setdefault(movie,0)
-                rank[movie] += wuv
-        # return the N best movies
-        # print(sorted(list(rank.items()), key=itemgetter(1), reverse=True)[0:N])
-        return sorted(list(rank.items()), key=itemgetter(1), reverse=True)[0:N]
+        if user not in self.trainset.keys():
+            return None
+        else:
+            watched_movies = self.trainset[user]
+            # v=similar user, wuv=similarity factor
+            for v, wuv in sorted(list(self.user_sim_mat[user].items()),
+                    key=itemgetter(1), reverse=True)[0:K]:
+                for movie in self.trainset[v]:
+                    if movie in watched_movies:
+                        continue
+                    # predict the user's "interest" for each movie
+                    rank.setdefault(movie,0)
+                    rank[movie] += wuv
+            # return the N best movies
+            # print(sorted(list(rank.items()), key=itemgetter(1), reverse=True)[0:N])
+            return sorted(list(rank.items()), key=itemgetter(1), reverse=True)[0:N]
 
     def evaluate(self):
         ''' return precision, recall, coverage and popularity '''
@@ -166,7 +168,6 @@ class UserBasedCF():
 
         print('precision=%.4f\trecall=%.4f\tcoverage=%.4f\tpopularity=%.4f' % \
                 (precision, recall, coverage, popularity), file=sys.stderr)
-
 
 
 usercf = UserBasedCF()
