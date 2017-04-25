@@ -15,6 +15,13 @@ def tagList():
         f.close()
     return render_template('movie/tag.html', taglt=taglt)
 
+@movie.route('/topN/<start>')
+def topN(start):
+    start_url=r'https://api.douban.com/v2/movie/top250?count=10'
+    url=start_url+'&start='+start
+    r = requests.get(url)
+    return render_template('movie/topN.html', movieInfo=r.json(), current_page=(int(start)//10+1))
+
 @movie.route('/search/<keyword>')
 @login_required
 def search(keyword):

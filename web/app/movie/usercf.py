@@ -23,8 +23,8 @@ class UserBasedCF():
         self.movie_popular = {}
         self.movie_count = 0
 
-        print('Similar user number = %d' % self.n_sim_user, file=sys.stderr)
-        print('recommended movie number = %d' % self.n_rec_movie, file=sys.stderr)
+        # print('Similar user number = %d' % self.n_sim_user, file=sys.stderr)
+        # print('recommended movie number = %d' % self.n_rec_movie, file=sys.stderr)
 
 
     @staticmethod

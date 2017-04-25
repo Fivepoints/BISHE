@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Rec-sys{% endblock %}
+
+{% block page_content %}
+<table class="table">
+    <caption><em><h4>{{ movieInfo['title'] }}</h4></em></caption>
+    <thead>
+      <tr>
+         <th>电影名称</th>
+          <th>封面</th>
+          <th>上映</th>
+          <th>类型</th>
+          <th>导演</th>
+          <th>主演</th>
+          <th>评分</th>
+          <th>操作</th>
+      </tr>
+   </thead>
+    <tbody>
+    {% for i in range(10) %}
+        <tr>
+            <td>{{ movieInfo['subjects'][i]['title'] }}</td>
+            <td><img src="{{ movieInfo['subjects'][i]['images']['small'] }}"></td>
+            <td>{{ movieInfo['subjects'][i]['year'] }}</td>
+            <td>
+                {% for genre in movieInfo['subjects'][i]['genres'] %}
+                    {{ genre }}/
+                {% endfor %}
+            </td>
+            <td>{{ movieInfo['subjects'][i]['directors'][0]['name'] }}</td>
+            <td>
+                {% for cast in movieInfo['subjects'][i]['casts'] %}
+                    {{ cast['name'] }}/
+                {% endfor %}
+            </td>
+            <td>{{ movieInfo['subjects'][i]['rating']['average'] }}</td>
+            <td><a href="{{ movieInfo['subjects'][i]['alt'] }}">查看详情</a></td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="row" style="margin-left:325px">
+            <ul class="pagination pagination-minimal">
+              {% if current_page==1 %}
+              <li class="previous"><a href="#" class="fui-arrow-left"></a></li>
+              {% else %}
+              <li class="previous"><a href="{{ url_for('movie.topN', start=(current_page*10-19)) }}" class="fui-arrow-left"></a></li>
+              {% endif %}
+
+              {% for i in range(10) %}
+                  {% if current_page==(i + 1) %}
+                    <li class="active"><a href="{{ url_for('movie.topN', start=i*10 + 1 )}}">{{ i + 1 }}</a></li>
+                  {% else %}
+                    <li><a href="{{ url_for('movie.topN', start=i*10 + 1 )}}">{{ i + 1 }}</a></li>
+                  {% endif %}
+              {% endfor %}
+
+              {% if current_page==10 %}
+              <li class="next"><a href="#" class="fui-arrow-right"></a></li>
+              {% else %}
+              <li class="next"><a href="{{ url_for('movie.topN', start=(current_page*10 + 1)) }}" class="fui-arrow-right"></a></li>
+              {% endif %}
+            </ul>
+</div>
+{% endblock %}

@@ -18,11 +18,11 @@
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
           </button>
-            <a class="navbar-brand" href="#">Rec-sys  Beta</a>
+            <a class="navbar-brand" href="/">Rec-sys  Beta</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
+            <li><a href="{{ url_for('movie.topN', start=0 )}}">Top N</a></li>
             <li><a href="{{ url_for('movie.recommend')}}">Recommend</a></li>
             <li><a href="{{ url_for('main.schedule')}}">Todo List</a></li>
           </ul>
