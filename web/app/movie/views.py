@@ -87,3 +87,12 @@ def addRatingRecord(original_name,rating):
         except sqlalchemy.exc.InvalidRequestError or sqlalchemy.exc.IntegrityError:
             flash('add ratingRecord failure because of the same ratingRecord already in database')
             return redirect(url_for('main.index'))
+
+@movie.route('/delRatingRecord/<movie_id>')
+def delRatingRecord(movie_id):
+    user_id = current_user.user_id
+    rating = Rating(user_id=user_id, movie_id=movie_id)
+    db.session.delete(rating)
+    db.session.commit()
+    flash('delete ratingRecord suc!')
+    return redirect(url_for('main.index'))

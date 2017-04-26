@@ -8,15 +8,15 @@ from . import db, login_manager
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
-    user_id = db.Column(db.Integer, unique=True,primary_key=True)
+    user_id = db.Column(db.Integer, unique=True, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(64), unique=True, index=True)
     age = db.Column(db.Integer)
     gender = db.Column(db.String(60))
     occupation = db.Column(db.String(64))
-    confirmed = db.Column(db.Boolean,default=False)
-
+    confirmed = db.Column(db.Boolean, default=False)
+    sendEmail = db.Column(db.Boolean, default=False)
     ratings = db.relationship('Rating', backref='user', lazy='dynamic')
 
     @property
