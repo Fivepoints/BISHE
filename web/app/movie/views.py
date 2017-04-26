@@ -91,7 +91,8 @@ def addRatingRecord(original_name,rating):
 @movie.route('/delRatingRecord/<movie_id>')
 def delRatingRecord(movie_id):
     user_id = current_user.user_id
-    rating = Rating(user_id=user_id, movie_id=movie_id)
+    rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first()
+    # rating = Rating(user_id=user_id, movie_id=movie_id)
     db.session.delete(rating)
     db.session.commit()
     flash('delete ratingRecord suc!')
