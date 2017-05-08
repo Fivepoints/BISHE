@@ -10,7 +10,7 @@ class Config:
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     MAIL_USERNAME = '1101936864'
-    MAIL_PASSWORD = 'dpdzwoaregcyibie'
+    MAIL_PASSWORD = 'password'
     @staticmethod
     def init_app(app):
         pass
