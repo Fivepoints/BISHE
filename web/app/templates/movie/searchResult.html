@@ -2,12 +2,6 @@
 
 {% block title %}Rec-sys{% endblock %}
 
-{#{% block head %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='starRating/main.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='starRating/example.css') }}">
-{% endblock%}#}
-
 {% block page_content %}
 <table class="table">
     <caption><em><h4>{{ movieInfo['title'] }}</h4></em></caption>
@@ -24,7 +18,7 @@
       </tr>
    </thead>
     <tbody>
-    {% for i in range(5) %}
+    {% for i in range(movieInfo['total']) %}
         <tr>
             <td>{{ movieInfo['subjects'][i]['title'] }}</td>
             <td><img src="{{ movieInfo['subjects'][i]['images']['small'] }}"></td>
@@ -50,7 +44,7 @@
                 </select>
             </td>
             <td>
-                <button value="{{ movieInfo['subjects'][i]['original_title']  }}" class="btn">提交</button>
+                <button value="{{ movieInfo['subjects'][i]['original_title']  }}" class="btn btn-primary">提交</button>
             </td>
         </tr>
     {% endfor %}
@@ -63,7 +57,7 @@
 {{ super() }}
 <script>
 $(document).ready(function () {
-    $(".btn").click(function () {
+    $(".btn-primary").click(function () {
         var original_name=$(this).val()
         var select = $(this).parent().prev().find("select")
         var rating=select.val()

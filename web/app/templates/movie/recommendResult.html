@@ -23,17 +23,34 @@
             <td>{{ movieInfo['subjects'][0]['title'] }}</td>
             <td><img src="{{ movieInfo['subjects'][0]['images']['small'] }}"></td>
             <td>{{ movieInfo['subjects'][0]['year'] }}</td>
+
             <td>
-                {% for genre in movieInfo['subjects'][0]['genres'] %}
-                    {{ genre }}/
-                {% endfor %}
+                {{ movieInfo['subjects'][0]['genres'][0] }}
+                {% if movieInfo['subjects'][0]['genres']|length >1 %}
+                    {% for genre in movieInfo['subjects'][0]['genres'][1:] %}
+                        /{{ genre }}
+                    {% endfor %}
+                {% endif %}
             </td>
-            <td>{{ movieInfo['subjects'][0]['directors'][0]['name'] }}</td>
+
             <td>
-                {% for cast in movieInfo['subjects'][0]['casts'] %}
-                    {{ cast['name'] }}/
-                {% endfor %}
+                {{ movieInfo['subjects'][0]['directors'][0]['name'] }}
+                {% if movieInfo['subjects'][0]['directors']|length >1 %}
+                    {% for director in movieInfo['subjects'][0]['directors'][1:] %}
+                        /{{ director['name'] }}
+                    {% endfor %}
+                {% endif %}
             </td>
+
+            <td>
+                {{ movieInfo['subjects'][0]['casts'][0]['name'] }}
+                {% if movieInfo['subjects'][0]['casts']|length >1 %}
+                    {% for cast in movieInfo['subjects'][0]['casts'][1:] %}
+                        /{{ cast['name'] }}
+                    {% endfor %}
+                {% endif %}
+            </td>
+
             <td>{{ movieInfo['subjects'][0]['rating']['average'] }}</td>
             <td><a href="{{ movieInfo['subjects'][0]['alt'] }}">查看详情</a></td>
         </tr>

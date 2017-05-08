@@ -29,7 +29,9 @@ def search(keyword):
     url=start_url+keyword+'&count=5'
     # print(url)
     r = requests.get(url=url)
-    return render_template('movie/searchResult.html', movieInfo=r.json())
+    j = r.json()
+    j['total'] = min(5, j['total'])
+    return render_template('movie/searchResult.html', movieInfo=j)
 
 @movie.route('/recommed')
 @login_required

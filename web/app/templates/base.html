@@ -40,14 +40,6 @@
               {% if current_user.is_authenticated() %}
                   <li class="active"><a href="{{ url_for('auth.logout') }}">{{ current_user.username }}</a></li>
                   <li><a href="{{ url_for('main.setting') }}"><span class="visible-sm visible-xs">Settings<span class="fui-gear"></span></span><span class="visible-md visible-lg"><span class="fui-gear"></span></span></a></li>
-                {#<li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ current_user.username }}<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href="{{ url_for('movie.tagList') }}">完善个人观影数据</a></li>
-                    <li><a href="#">生成观影推荐数据</a></li>
-                    <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                </ul>
-                </li>#}
               {% else %}
                 <li class="active"><a href="{{ url_for('auth.login') }}">Signed in</a></li>
               {% endif %}
