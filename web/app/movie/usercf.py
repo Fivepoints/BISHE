@@ -1,12 +1,14 @@
 #-*- coding: utf-8 -*-
 '''
-Created on 2015-06-22
+Created on 201７-4-17
 
-@author: Lockvictor
+@author: Zhao Pengya
 '''
 import sys, random, math
 from operator import itemgetter
 from ..models import Rating
+from math import sqrt
+
 random.seed(0)
 
 
@@ -28,9 +30,9 @@ class UserBasedCF():
 
 
     @staticmethod
-    def loadfile():
-        ''' load a file, return a generator. '''
-        ratings=Rating.query.all()
+    def loadBase():
+        ''' load file from dataBase, return a generator. '''
+        ratings = Rating.query.all()
         for i,rating in enumerate(ratings):
             yield str(rating.user_id)+"::"+str(rating.movie_id)+"::"+str(rating.rating)
             if i%100000 == 0:
@@ -41,9 +43,9 @@ class UserBasedCF():
     def generate_dataset(self, pivot=0.3):
         ''' load rating data and split it to training set and test set '''
         trainset_len = 0
-        testset_len = 0
+        # testset_len = 0
 
-        for line in self.loadfile():
+        for line in self.loadBase():
             user, movie, rating = line.split('::')
             # split the data by pivot
             self.trainset.setdefault(user, {})
@@ -59,62 +61,56 @@ class UserBasedCF():
             #     self.testset[user][movie] = float(rating)
             #     testset_len += 1
 
-        print('split training set and test set succ', file=sys.stderr)
+        print('load set is suc!', file=sys.stderr)
         print('train set = %s' % trainset_len, file=sys.stderr)
-        print('test set = %s' % testset_len, file=sys.stderr)
+        # print('test set = %s' % testset_len, file=sys.stderr)
 
 
     def calc_user_sim(self):
-        ''' calculate user similarity matrix '''
-        # build inverse table for item-users
-        # key=movieID, value=list of userIDs who have seen this movie
-        print('building movie-users inverse table...', file=sys.stderr)
-        movie2users = dict()
 
-        for user,movies in self.trainset.items():
-            for movie in movies:
-                # inverse table for item-users
-                if movie not in movie2users:
-                    movie2users[movie] = set()
-                movie2users[movie].add(user)
-                # count item popularity at the same time
-                if movie not in self.movie_popular:
-                    self.movie_popular[movie] = 0
-                self.movie_popular[movie] += 1
-        print('build movie-users inverse table succ', file=sys.stderr)
-
-        # save the total movie number, which will be used in evaluation
-        self.movie_count = len(movie2users)
-        print('total movie number = %d' % self.movie_count, file=sys.stderr)
-
-        # count co-rated items between users
         usersim_mat = self.user_sim_mat
-        print('building user co-rated movies matrix...', file=sys.stderr)
 
-        for movie,users in movie2users.items():
-            for u in users:
-                for v in users:
-                    if u == v: continue
-                    usersim_mat.setdefault(u,{})
-                    usersim_mat[u].setdefault(v,0)
-                    usersim_mat[u][v] += 1
-        print('build user co-rated movies matrix succ', file=sys.stderr)
+        for u in self.trainset.keys():
+            for v in self.trainset.keys():
+                if u == v: continue
+                else:
+                    usersim_mat.setdefault(u, {})
+                    usersim_mat[u].setdefault(v, 0)
+                    usersim_mat[u][v] = self.sim_pearson(u, v)
 
-        # calculate similarity matrix 
-        print('calculating user similarity matrix...', file=sys.stderr)
-        simfactor_count = 0
-        PRINT_STEP = 20000
-        for u,related_users in usersim_mat.items():
-            for v,count in related_users.items():
-                usersim_mat[u][v] = count / math.sqrt(
-                        len(self.trainset[u]) * len(self.trainset[v]))
-                simfactor_count += 1
-                if simfactor_count % PRINT_STEP == 0:
-                    print('calculating user similarity factor(%d)' % simfactor_count, file=sys.stderr)
+    def sim_pearson(self, u, v):
 
-        print('calculate user similarity matrix(similarity factor) succ', file=sys.stderr)
-        print('Total similarity factor number = %d' %simfactor_count, file=sys.stderr)
+        # Get the list of mutually rated items
+        common_rated = {}
+        for movie in self.trainset[u]:
+            if movie in self.trainset[v]:
+                common_rated[movie] = 1
 
+        # if they are no ratings in common, return 0
+        if len(common_rated) == 0:
+            return 0
+
+        # Sum calculations
+        n = len(common_rated)
+
+        # Sums of all the preferences
+        sum1 = sum([self.trainset[u][movie] for movie in common_rated])
+        sum2 = sum([self.trainset[v][movie] for movie in common_rated])
+
+        # Sums of the squares
+        sum1Sq = sum([pow(self.trainset[u][movie], 2) for movie in common_rated])
+        sum2Sq = sum([pow(self.trainset[v][movie], 2) for movie in common_rated])
+
+        # Sum of the products
+        pSum = sum([self.trainset[u][movie] * self.trainset[v][movie] for movie in common_rated])
+
+        # Calculate r (Pearson score)
+        num = pSum - (sum1 * sum2 / n)
+        den = sqrt((sum1Sq - pow(sum1, 2) / n) * (sum2Sq - pow(sum2, 2) / n))
+        if den == 0:
+            return 0
+        r = num / den
+        return r
 
     def recommend(self, user):
         ''' Find K similar users and recommend N movies. '''
@@ -128,12 +124,12 @@ class UserBasedCF():
             # v=similar user, wuv=similarity factor
             for v, wuv in sorted(list(self.user_sim_mat[user].items()),
                     key=itemgetter(1), reverse=True)[0:K]:
-                for movie in self.trainset[v]:
+                for movie, rating in self.trainset[v].items():
                     if movie in watched_movies:
                         continue
                     # predict the user's "interest" for each movie
                     rank.setdefault(movie,0)
-                    rank[movie] += wuv
+                    rank[movie] += wuv * rating
             # return the N best movies
             # print(sorted(list(rank.items()), key=itemgetter(1), reverse=True)[0:N])
             return sorted(list(rank.items()), key=itemgetter(1), reverse=True)[0:N]
