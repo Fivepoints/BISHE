@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Setting{% endblock %}
+
+{% block page_content %}
+    <div class="container">
+        </br>
+        <div class="row">
+            <div  class="col-md-offset-3">
+             <h6>自动通过邮件发送观影推荐信息
+                 {% if settingilt['sendEmailbol']==True %}
+                 <input type="checkbox" checked data-toggle="switch" id="sendEmail"/></h6>
+                 {% else %}
+                 {% endif %}
+             </h6>　
+            </div>
+        </div>
+        <div class="row">
+            <div  class="col-md-offset-3　col-md-2">
+             <table class="table">
+                <caption><em><h4>打分记录</h4></em></caption>
+                <thead>
+                  <tr>
+                     <th>电影名称</th>
+                      <th>打分</th>
+                      <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for rating in settingilt['subjects'] %}
+                    <tr>
+                        <td>{{ rating['movie_name'] }}</td>
+                        <td>{{ rating['rating_score'] }}</td>
+                        <td><button type="button" value="{{ rating['movie_id'] }}" class="btn btn-danger">删除</button></td>
+                    </tr>
+                {% endfor %}
+              　</tbody>
+            </table>
+            </div>
+            </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+$(document).ready(function () {
+    $(".btn").click(function () {
+        var movie_id=$(this).val()
+        window.location.href="/movie/delRatingRecord/"+movie_id
+    })
+})
+</script>
+{% endblock %}

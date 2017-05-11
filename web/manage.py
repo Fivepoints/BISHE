@@ -79,6 +79,6 @@ def dat2base():
 
 if __name__ == '__main__':
     manager.run()
-    dat2base()
+
 
   

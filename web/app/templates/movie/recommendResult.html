@@ -25,28 +25,28 @@
             <td>{{ movieInfo['subjects'][0]['year'] }}</td>
 
             <td>
-                {{ movieInfo['subjects'][0]['genres'][0] }}
-                {% if movieInfo['subjects'][0]['genres']|length >1 %}
-                    {% for genre in movieInfo['subjects'][0]['genres'][1:] %}
-                        /{{ genre }}
+
+                {% if movieInfo['subjects'][0]['genres']|length >=1 %}
+                    {% for genre in movieInfo['subjects'][0]['genres'] %}
+                        {{ genre }}/
                     {% endfor %}
                 {% endif %}
             </td>
 
             <td>
-                {{ movieInfo['subjects'][0]['directors'][0]['name'] }}
-                {% if movieInfo['subjects'][0]['directors']|length >1 %}
-                    {% for director in movieInfo['subjects'][0]['directors'][1:] %}
-                        /{{ director['name'] }}
+
+                {% if movieInfo['subjects'][0]['directors']|length >=1 %}
+                    {% for director in movieInfo['subjects'][0]['directors'] %}
+                        {{ director['name'] }}/
                     {% endfor %}
                 {% endif %}
             </td>
 
             <td>
-                {{ movieInfo['subjects'][0]['casts'][0]['name'] }}
-                {% if movieInfo['subjects'][0]['casts']|length >1 %}
-                    {% for cast in movieInfo['subjects'][0]['casts'][1:] %}
-                        /{{ cast['name'] }}
+
+                {% if movieInfo['subjects'][0]['casts']|length >=1 %}
+                    {% for cast in movieInfo['subjects'][0]['casts'] %}
+                        {{ cast['name'] }}/
                     {% endfor %}
                 {% endif %}
             </td>
