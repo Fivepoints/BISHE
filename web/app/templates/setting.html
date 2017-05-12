@@ -6,13 +6,13 @@
     <div class="container">
         </br>
         <div class="row">
-            <div  class="col-md-offset-3">
-             <h6>自动通过邮件发送观影推荐信息
+            <div  class="col-md-offset-２">
+             <h7>自动通过邮件发送观影推荐信息
                  {% if settingilt['sendEmailbol']==True %}
-                 <input type="checkbox" checked data-toggle="switch" id="sendEmail"/></h6>
+                 <input type="checkbox" checked data-toggle="switch" id="sendEmail"/></h7>
                  {% else %}
                  {% endif %}
-             </h6>　
+             </h7>　
             </div>
         </div>
         <div class="row">
@@ -45,7 +45,7 @@
 {{ super() }}
 <script>
 $(document).ready(function () {
-    $(".btn").click(function () {
+    $(".btn-danger").click(function () {
         var movie_id=$(this).val()
         window.location.href="/movie/delRatingRecord/"+movie_id
     })

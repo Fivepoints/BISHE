@@ -6,7 +6,8 @@ from .. import db
 from flask import render_template
 from flask_login import login_required, current_user
 import requests
-from .item_Pearson import itemcf
+from .itemCF import itemcf
+from .userCF import usercf
 
 @movie.route('/tagList')
 def tagList():
@@ -37,7 +38,7 @@ def search(keyword):
 @login_required
 def recommend():
     user_id = current_user.user_id
-    movies_id = itemcf.recommend(str(user_id))
+    movies_id = usercf.recommend(str(user_id))
     if movies_id is None:
         flash('before recommend you shoud start the recommend algorithm!')
         return redirect(url_for('main.index'))
@@ -64,9 +65,8 @@ def recommend():
 @movie.route('/loadRecSys')
 def loadRecSys():
     user_id = current_user.user_id
-    itemcf.generate_dataset()
-    itemcf.transformPrefs()
-    itemcf.cal_user_sim(str(user_id))
+    usercf.generate_dataset()
+    usercf.cal_user_sim(str(user_id))
     flash('the algorithm is staring')
     return redirect(url_for('main.index'))
     # return render_template('movie/loadRecSys.html')
